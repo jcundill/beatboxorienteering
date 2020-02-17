@@ -57,10 +57,10 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item">
-						<a class="nav-link disabled" href="#" tabindex="-1">Stats</a>
+						<a class="nav-link active" href="/" tabindex="-1">Choose Route</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link disabled" href="#" tabindex="-1">About</a>
+						<a class="nav-link" href="/stats.html" tabindex="-1">Best Routes</a>
 					</li>
 				</ul>
 			</div>
@@ -134,6 +134,14 @@
 		var map;
 		var control;
 		var currGpx;
+
+		$.urlParam = function (name) {
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+				.exec(window.location.search);
+
+			return (results !== null) ? results[1] || 0 : false;
+		}
+
 		$(document).ready(function (e) {
 			$("#downloadMapCard").hide();
 			$("#downloadGpxCard").hide();
@@ -150,7 +158,18 @@
 				attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
 			}).addTo(map);
 
+
 			map.setView([53.2356556, -1.4255804], 13);
+			var qDist = $.urlParam("dist");
+			var qBox = $.urlParam("box");
+			if (qDist && qBox) {
+				$("#colDistLabel").val(qDist);
+				$("#colStartLabel").val(qBox);
+				showDownloadGPX(qBox + "_" + qDist)
+				showDownloadMap(qBox + "_" + qDist)
+				redrawLeaflet(qBox + "_" + qDist)
+			}
+
 		})
 
 		$("#colStartLabel, #colDistLabel").change(function () {
@@ -196,10 +215,11 @@
 				},
 				marker_options: {
 					wptIconUrls: {
-						'': 'img/control.svg'
+						'': 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png'
 					},
-					startIconUrl: 'img/start.svg',
-					endIconUrl: 'img/finish.svg'
+					startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
+					endIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
+					shadowUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
 				},
 			}).on('loaded', function (e) {
 				var gpx = e.target;
