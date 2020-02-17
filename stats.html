@@ -1,0 +1,166 @@
+<html>
+
+<head>
+    <title>Beat Box Orienteering</title>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.css" />
+    <style type="text/css">
+        .gpx {
+            border: 2px #aaa solid;
+            border-radius: 5px;
+            box-shadow: 0 0 3px 3px #ccc;
+            /* width: 800px; */
+            margin: 1em auto;
+        }
+
+        .gpx .start {
+            font-size: smaller;
+            color: #444;
+        }
+
+        .gpx .map {
+            /* border: 1px #888 solid; */
+            border-left: none;
+            border-right: none;
+            /* width: 800px; */
+            height: 500px;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Beat Box Orienteering</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1">Stats</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1">About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="card">
+                <h5 class="card-title">Most productive runs available for the given distances</h5>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Distance</th>
+                                <th scope="col">Max Boxes Reachable</th>
+                                <th scope="col">Possible Start Locations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Up to 5K</td>
+                                <td>10</td>
+                                <td>Beat Box 42, Beat Box 44, Beat Box 45, Beat Box 46, Beat Box 47, Beat Box 48, Beat
+                                    Box
+                                    50, Beat Box 51, Beat
+                                    Box 59, Beat Box 78</td>
+                            </tr>
+                            <tr>
+                                <td>Up to 6K</td>
+                                <td>11</td>
+                                <td>Beat Box 11, Beat Box 22, Beat Box 42, Beat Box 43, Beat Box 44, Beat Box 45, Beat
+                                    Box
+                                    46, Beat Box 47, Beat
+                                    Box 48, Beat Box 49, Beat Box 50, Beat Box 51, Beat Box 58, Beat Box 59, Beat Box 6,
+                                    Beat Box 78</td>
+                            </tr>
+                            <tr>
+                                <td>Up to 8K</td>
+                                <td>14</td>
+                                <td>Beat Box 1, Beat Box 10, Beat Box 11, Beat Box 13, Beat Box 19, Beat Box 2, Beat Box
+                                    21,
+                                    Beat Box 22, Beat Box
+                                    24, Beat Box 25, Beat Box 3, Beat Box 36, Beat Box 38, Beat Box 39, Beat Box 40,
+                                    Beat
+                                    Box 41, Beat Box 42, Beat Box 43,
+                                    Beat Box 44, Beat Box 45, Beat Box 46, Beat Box 47, Beat Box 48, Beat Box 49, Beat
+                                    Box
+                                    5, Beat Box 50, Beat Box 51, Beat
+                                    Box 54, Beat Box 55, Beat Box 56, Beat Box 57, Beat Box 58, Beat Box 59, Beat Box 6,
+                                    Beat Box 7, Beat Box 78, Beat Box
+                                    8, Beat Box 86, Beat Box 9</td>
+                            </tr>
+                            <tr>
+                                <td>Up to 10K</td>
+                                <td>18</td>
+                                <td>Beat Box 22, Beat Box 25, Beat Box 38, Beat Box 39, Beat Box 40, Beat Box 41, Beat
+                                    Box
+                                    42, Beat Box 43, Beat
+                                    Box 44, Beat Box 45, Beat Box 46, Beat Box 47, Beat Box 48, Beat Box 49, Beat Box
+                                    50,
+                                    Beat Box 51, Beat Box 54, Beat Box
+                                    55, Beat Box 56, Beat Box 57, Beat Box 58, Beat Box 59, Beat Box 6, Beat Box 78</td>
+                            </tr>
+                            <tr>
+                                <td>Up to 12K</td>
+                                <td>21</td>
+                                <td>Beat Box 10, Beat Box 11, Beat Box 13, Beat Box 18, Beat Box 19, Beat Box 2, Beat
+                                    Box
+                                    21, Beat Box 22, Beat
+                                    Box 24, Beat Box 25, Beat Box 27, Beat Box 31, Beat Box 32, Beat Box 33, Beat Box
+                                    34,
+                                    Beat Box 35, Beat Box 36, Beat Box
+                                    37, Beat Box 38, Beat Box 39, Beat Box 40, Beat Box 41, Beat Box 42, Beat Box 43,
+                                    Beat
+                                    Box 44, Beat Box 45, Beat Box 46,
+                                    Beat Box 47, Beat Box 48, Beat Box 49, Beat Box 5, Beat Box 50, Beat Box 51, Beat
+                                    Box
+                                    52, Beat Box 54, Beat Box 55, Beat
+                                    Box 56, Beat Box 57, Beat Box 58, Beat Box 59, Beat Box 6, Beat Box 7, Beat Box 78,
+                                    Beat
+                                    Box 8, Beat Box 9</td>
+                            </tr>
+                            <tr>
+                                <td>Up to 16K</td>
+                                <td>28</td>
+                                <td>Beat Box 1, Beat Box 10, Beat Box 11, Beat Box 13, Beat Box 22, Beat Box 25, Beat
+                                    Box 3,
+                                    Beat Box 31, Beat Box
+                                    32, Beat Box 33, Beat Box 35, Beat Box 38, Beat Box 39, Beat Box 40, Beat Box 41,
+                                    Beat
+                                    Box 42, Beat Box 43, Beat Box 44,
+                                    Beat Box 45, Beat Box 46, Beat Box 47, Beat Box 48, Beat Box 5, Beat Box 50, Beat
+                                    Box
+                                    51, Beat Box 54, Beat Box 55, Beat
+                                    Box 56, Beat Box 57, Beat Box 58, Beat Box 59, Beat Box 6, Beat Box 7, Beat Box 78,
+                                    Beat
+                                    Box 8, Beat Box 86
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

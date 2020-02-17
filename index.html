@@ -120,6 +120,11 @@
 				<div id="map" class="gpx" data-gpx-source="gpx/Beat_Box_67_16K.gpx" data-map-target="demo-map">
 					<div class="map" id="demo-map"></div>
 				</div>
+				<div class="card" id="distanceCard">
+					<div class="card-body">
+						Route Length: <span id="distanceId"></span>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -132,6 +137,7 @@
 		$(document).ready(function (e) {
 			$("#downloadMapCard").hide();
 			$("#downloadGpxCard").hide();
+			$("#distanceCard").hide();
 			for (var i = 0; i < beatBoxes.length; i++) {
 				var ele = document.createElement("option");
 				ele.value = beatBoxes[i].name.replace(/ /g, "_");
@@ -157,8 +163,15 @@
 			} else {
 				$("#downloadMapCard").hide();
 				$("#downloadGpxCard").hide();
+				$("#distanceCard").hide();
 			}
 		})
+
+		function showDist(length) {
+			$("#distanceId").text((length / 1000).toFixed(2) + "K");
+			$("#distanceCard").show()
+		}
+
 		function showDownloadGPX(course) {
 			$("#downloadGpxId")[0].href = "./gpx/" + course + ".gpx";
 			$("#downloadGpxCard").show();
@@ -183,15 +196,15 @@
 				},
 				marker_options: {
 					wptIconUrls: {
-						'': 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png'
+						'': 'img/control.svg'
 					},
-					startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
-					endIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
-					shadowUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
+					startIconUrl: 'img/start.svg',
+					endIconUrl: 'img/finish.svg'
 				},
 			}).on('loaded', function (e) {
 				var gpx = e.target;
 				map.fitBounds(gpx.getBounds());
+				showDist(gpx.get_distance());
 			}).addTo(map);
 		}
 	</script>
