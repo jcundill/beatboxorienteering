@@ -3,6 +3,8 @@
 <head>
 	<title>Beat Box Orienteering</title>
 	<!-- Latest compiled and minified CSS -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoOkefABYkHA6BlBD9PoiBk-0oBrjQWQE" async
+		defer></script>
 	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 	<!-- Latest compiled and minified JavaScript -->
@@ -40,7 +42,8 @@
 			margin: 0;
 		}
 	</style>
-
+	<script src="https://unpkg.com/es6-promise@4.0.5/dist/es6-promise.min.js"></script>
+	<script>ES6Promise.polyfill();</script>
 	<script type="text/javascript" language="javascript" src="./boxes.js"></script>
 
 </head>
@@ -129,6 +132,7 @@
 		</div>
 	</div>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.1/leaflet.js"></script>
+	<script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
 	<script src="https://rawgit.com/mpetazzoni/leaflet-gpx/master/gpx.js"></script>
 	<script>
 		var map;
@@ -154,9 +158,23 @@
 			}
 			var mapid = document.getElementById('map').getAttribute('data-map-target');
 			map = L.map(mapid);
-			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
-			}).addTo(map);
+			});
+			var sat = L.gridLayer.googleMutant({
+				type: 'satellite',
+				maxZoom: 18,
+			});
+
+
+			var baseMaps = {
+				"Street Map": osm,
+				"Satellite": sat
+			};
+			var overlays = {};
+
+			L.control.layers(baseMaps, overlays).addTo(map);
+			osm.addTo(map)
 			L.control.scale().addTo(map);
 
 
