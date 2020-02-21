@@ -157,6 +157,7 @@
 			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: 'Map data &copy; <a href="http://www.osm.org">OpenStreetMap</a>'
 			}).addTo(map);
+			L.control.scale().addTo(map);
 
 
 			map.setView([53.2356556, -1.4255804], 13);
@@ -217,7 +218,7 @@
 					wptIconUrls: {
 						'': 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png'
 					},
-					startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-start.png',
+					startIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
 					endIconUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-icon-end.png',
 					shadowUrl: 'http://github.com/mpetazzoni/leaflet-gpx/raw/master/pin-shadow.png',
 				},
