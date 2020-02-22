@@ -45,6 +45,7 @@
 	<script src="https://unpkg.com/es6-promise@4.0.5/dist/es6-promise.min.js"></script>
 	<script>ES6Promise.polyfill();</script>
 	<script type="text/javascript" language="javascript" src="./boxes.js"></script>
+	<script type="text/javascript" language="javascript" src="./num_controls.js"></script>
 
 </head>
 
@@ -186,7 +187,7 @@
 				$("#colStartLabel").val(qBox);
 				showDownloadGPX(qBox + "_" + qDist)
 				showDownloadMap(qBox + "_" + qDist)
-				redrawLeaflet(qBox + "_" + qDist)
+				redrawLeaflet(qBox, qDist)
 			}
 
 		})
@@ -197,7 +198,7 @@
 			if (newDist != "" && newStart != "") {
 				showDownloadGPX(newStart + "_" + newDist)
 				showDownloadMap(newStart + "_" + newDist)
-				redrawLeaflet(newStart + "_" + newDist)
+				redrawLeaflet(newStart, newDist)
 			} else {
 				$("#downloadMapCard").hide();
 				$("#downloadGpxCard").hide();
@@ -205,8 +206,8 @@
 			}
 		})
 
-		function showDist(length) {
-			$("#distanceId").text((length / 1000).toFixed(2) + "K");
+		function showDist(length, ctrls) {
+			$("#distanceId").text((length / 1000).toFixed(2) + "K, Beat Boxes: " + ctrls);
 			$("#distanceCard").show()
 		}
 
@@ -220,13 +221,15 @@
 			$("#downloadMapCard").show();
 		}
 
-		function redrawLeaflet(course) {
+		function redrawLeaflet(start, dist) {
+			var course = start + "_" + dist
+			var ctrls = $.grep(numControls[start.replace(/_/g, " ")], function (e) { return e.first === dist; })[0].second;
 			if (currGpx)
 				currGpx.removeFrom(map);
-			display_gpx("gpx/" + course + ".gpx");
+			display_gpx("gpx/" + course + ".gpx", ctrls);
 		}
 
-		function display_gpx(url) {
+		function display_gpx(url, ctrls) {
 			currGpx = new L.GPX(url, {
 				async: true,
 				gpx_options: {
@@ -243,7 +246,7 @@
 			}).on('loaded', function (e) {
 				var gpx = e.target;
 				map.fitBounds(gpx.getBounds());
-				showDist(gpx.get_distance());
+				showDist(gpx.get_distance(), ctrls);
 			}).addTo(map);
 		}
 	</script>
